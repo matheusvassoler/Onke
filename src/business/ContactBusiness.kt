@@ -1,7 +1,10 @@
 package business
 
+import entity.ContactEntity
+import repository.ContactRepository
+
 class ContactBusiness() {
-    
+
     fun validate(name: String, phone: String) {
         if(name == "") {
             throw Exception("Nome é obrigatório")
@@ -20,9 +23,18 @@ class ContactBusiness() {
 
     fun save(name: String, phone: String) {
         validate(name, phone);
+        val contact = ContactEntity(name, phone)
+        //Ao inves de criar uma nova classe, isto é, usar ContactRepository()
+        //É utilizado o ContactRepository, no qual permite obter o que já existe na classe
+        //Se a classe não possuir nenhum contato adicionado irá retornar uma lista vazia
+        //Porém se possuir contato, irá retornar os contatos
+        ContactRepository.save(contact)
     }
 
     fun delete(name: String, phone: String) {
         validateDelete(name, phone)
+
+        val contact = ContactEntity(name, phone)
+        ContactRepository.delete(contact)
     }
 }
